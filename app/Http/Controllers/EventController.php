@@ -15,16 +15,16 @@ class EventController extends Controller
         // バリデーション（eventsテーブルの中でNULLを許容していないものをrequired）
         $request->validate([
             'event_title' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
             'event_color' => 'required',
         ]);
 
         // 登録処理
         $event->event_title = $request->input('event_title');
         $event->event_body = $request->input('event_body');
-        $event->start_date = $request->input('start_date');
-        $event->end_date = date("Y-m-d", strtotime("{$request->input('end_date')} +1 day")); // FullCalendarが登録する終了日は仕様で1日ずれるので、その修正を行っている
+        $event->start_time = $request->input('start_time');
+        $event->end_time = dateTime("", strtotime("{$request->input('end_date')} +1 day")); // FullCalendarが登録する終了日は仕様で1日ずれるので、その修正を行っている
         $event->event_color = $request->input('event_color');
         $event->event_border_color = $request->input('event_color');
         $event->save();

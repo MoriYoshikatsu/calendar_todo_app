@@ -3,6 +3,7 @@ import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // 追記1（interactionPluginの導入）
+import listPlugin from "@fullcalendar/list";
 
 // 日付を-1してYYYY-MM-DDの書式で返すメソッド
 function formatDate(date, pos) {
@@ -20,8 +21,9 @@ const calendarEl = document.getElementById("calendar");
 // "calendar"というidがないbladeファイルではエラーが出てしまうので、if文で除外。
 if (calendarEl) {
     const calendar = new Calendar(calendarEl, {
+        locale: "ja",
         // プラグインの導入(import忘れずに)
-        plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin],
+        plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
     
         // カレンダー表示
         initialView: "dayGridMonth", // 最初に表示させるページの形式
@@ -48,9 +50,14 @@ if (calendarEl) {
             // コンマのみで区切るとページ表示時に間が空かず、半角スペースで区切ると間が空く（半角があるかないかで表示が変わることに注意）
             start: "prev,next today", // ヘッダー左（前月、次月、今日の順番で左から配置）
             center: "title", // ヘッダー中央（今表示している月、年）
-            end: "eventAddButton dayGridMonth,timeGridWeek", // ヘッダー右（月形式、時間形式）
+            end: "eventAddButton dayGridMonth,timeGridWeek,listweek", // ヘッダー右（月形式、時間形式）
         },
         height: "auto", // 高さをウィンドウサイズに揃える
+        buttonText: { //各ボタンの日本語化
+          month: '月',
+          week: '週',
+          day: '日'
+        },
 
         events: function (info, successCallback, failureCallback) { // eventsはページが切り替わるたびに実行される
           // axiosでLaravelの予定取得処理を呼び出す
